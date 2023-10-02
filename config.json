@@ -1,0 +1,54 @@
+{
+    "attribute": {
+        "age": "22",
+        "birth": "China",
+        "constellation": "Aquarius",
+        "contact": "888",
+        "gender": "Female",
+        "hobby": "LOL",
+        "job": "Student",
+        "name": "Sunny",
+        "voice": "JENNY",
+        "zodiac": "Tiger"
+    },
+    "interact": {
+        "QnA": "qa_demo.xlsx",
+        "maxInteractTime": 15,
+        "perception": {
+            "chat": 100,
+            "follow": 100,
+            "gift": 100,
+            "indifferent": 100,
+            "join": 100
+        },
+        "playSound": false,
+        "visualization": true
+    },
+    "items": [
+        {
+            "QnA": "",
+            "demoVideo": "",
+            "enabled": false,
+            "explain": {
+                "character": "",
+                "discount": "",
+                "intro": "",
+                "price": "",
+                "promise": "",
+                "usage": ""
+            },
+            "name": ""
+        }
+    ],
+    "source": {
+        "liveRoom": {
+            "enabled": false,
+            "url": "\u65b0\u7248\u672c\u4e0d\u7528\u586b\u5199"
+        },
+        "record": {
+            "channels": 2,
+            "device": "SteelSeries Sonar - Microphone ",
+            "enabled": true
+        }
+    }
+}

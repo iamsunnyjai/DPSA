@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- index.css -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+    </link>
+    <!-- <link rel="stylesheet" href="./css/index.css"> -->
+    <!-- 引入element-ui样式 -->
+    <!-- <link rel="stylesheet" href="./css/element.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/element.css') }}">
+    </link>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    
+
+    <title>DPOA</title>
+
+</head>
+
+<body>
+    <div id="app">
+        <div class="main">
+            <div class="title">
+                <h2>Digital Police Office Assistant</h2>
+            </div>
+            <div class="main_box">
+                <div class="left">
+                    <div class="left_top">
+                        <p class="left_top_p">Settings：</p>
+                        <div class="character">
+                            <div class="character_top">
+                                <div class="character_right">
+                                    <ul>
+                                        <li>
+                                            <p>Voice：{{attribute_voice}}</p>
+                                            <el-select v-model="attribute_voice" placeholder="Please select">
+                                                <el-option v-for="item in voice_list" :key="item.value"
+                                                    :label="item.label" :value="item.value">
+                                                </el-option>
+                                            </el-select>
+                                        </li>
+                                        <br>
+                                        <li>
+                                            <p>Sensitivity：</p>
+                                            <el-slider v-model="interact_perception_follow"></el-slider>
+                                        </li>
+                                       
+                                        <br>
+
+                                    </ul>
+                                </div>
+                            </div>
+                          
+                        </div>
+                    </div>
+                    <div class="left_box">
+                        <p>&nbsp;</p>
+                        <div class="source">
+                            <ul>
+                                
+                                <li class="url">
+                                    <el-switch v-model="source_record_enabled" active-color="#13ce66"
+                                        inactive-color="#ff4949">
+                                    </el-switch>
+                                    <p>Mic</p>
+                                    <el-select v-model="source_record_device" placeholder="Please select">
+                                        <el-option v-for="item in device_list" :key="item.value" :label="item.label"
+                                            :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </li>
+                                <li class="url">
+
+                                    <p style="margin-left: 40px">Message</p>
+                                    <el-input v-model="panel_msg" :disabled="true"></el-input>
+                                </li>
+                                <li class="but">
+                                    <el-button v-if="live_state == 1" type="success" class="btn_close"
+                                        style="width:200px" @click=postStopLive()>TurnOff（Running）</el-button>
+                                    <el-button v-else-if="live_state == 2" type="primary" plain disabled
+                                        style="width:200px">Starting...</el-button>
+                                    <el-button v-else-if="live_state == 3" type="success" plain disabled
+                                        style="width:200px">Closing...</el-button>
+                                    <el-button v-else type="primary" style="width:200px" class="btn_open"
+                                        @click=postStartLive()>Start</el-button>
+                                    <el-button type="button" style="width:200px" @click=postData()>Save</el-button>
+                                </li>
+                                <li class="p_red" >
+                                    <p v-if="is_connect" style="color: #67c23a;"> Digital Human：Connected </p>
+                                    <p v-else > Digital Human：Disconnected </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="right_main">
+                        <div class="container">
+                            <div class="content">
+                       
+                                <div v-for="item in msg_list">
+                                <div class="item item-center"><span>[[item.timetext]]</span></div>
+
+                                <div class="item item-left" v-if="item.type == 'dpsa'">
+                                    <div class="avatar"><img src="{{ url_for('static',filename='to.jpg') }}" />
+                                    </div>
+                                    <div class="bubble bubble-left">[[item.content]]
+                                    </div>
+                                </div>
+                                <div class="item item-right" v-else>
+                                    <div class="bubble bubble-right">[[item.content]]</div>
+                                    <div class="avatar"><img src="{{ url_for('static',filename='from.jpg') }}" />
+                                    </div>
+                                </div>
+                            </div>
+                                
+                          
+
+                             
+                              
+                            </div>
+                            <div class="input-area">
+                                <textarea v-model="send_msg" name="text" id="textarea" placeholder="Say somthing..."></textarea>
+                                <div class="button-area">
+                                    <button id="send-btn" @click="send(1)">Send</button>
+                                    
+                                    <!-- <button id="send-btn" @click="send(2)" style="margin-left: 25px;">ChatGPT</button> -->
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<!-- 开发环境vue.js -->
+<script src="{{ url_for('static',filename='js/vue.js') }}"></script>
+<!-- 发行环境vue.js -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
+<!-- 引入element-ui组件库 -->
+<!-- <script src="./js/element.js"></script> -->
+<script src="{{ url_for('static',filename='js/element.js') }}"></script>
+<!-- index.js -->
+<!-- <script src="./js/index.js"></script> -->
+<!-- <script src="./js/self-adaption.js"></script> -->
+
+<script src="{{ url_for('static',filename='js/index.js') }}"></script>
+<script src="{{ url_for('static',filename='js/self-adaption.js') }}"></script>
+
+</html>
